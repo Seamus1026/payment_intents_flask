@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="jumbotron text-center">
+        <h1 class="display-6">{{ productTitle }}</h1>
+        <p class="lead"><strong>${{ amount }}</strong></p>
+        <hr>
+            <div style="width: 40vw; margin-left: 320px">
+                <form id="payment-form">
+                    <div id="card-element">
+                    </div>
+                    <div id="card-errors" role="alert"></div>
+                    <button style="margin-top: 20px;" class="btn btn-info btn-small btn-block" id="submit"
+                            type="submit">Pay
+                    </button>
+                </form>
+            </div>
+    </div>
+
+    <script>
+        // Create an instance of Stripe
+        // create dynamically using this
+        // var stripe = Stripe('{{ stripe_pk }}');
+        var stripe = Stripe('pk_test_zhc4qwJQq9EWAoPmvTmpECYc00mzgyw041');  // add test PK here
+        // Create an instance of elements
+        var elements = stripe.elements();
+
+        var style = {
+            base: {
+                color: "#32325d",
+            }
+        };
+
+        var card = elements.create("card", {style: style}); // create the card element
+        card.mount("#card-element");
+
+        card.addEventListener('change', ({error}) => {
+            const displayError = document.getElementById('card-errors');
+            if (error) {
+                displayError.textContent = error.message;
+            } else {
+                displayError.textContent = '';
+            }
+        });
+
+        var form = document.getElementById('payment-form');
+
+        form.addEventListener('submit', function (ev) {
+            ev.preventDefault();
+            stripe.confirmCardPayment('{{ client_secret }}', {
+                payment_method: {
+                    card: card,
+                    billing_details: {
+                        name: '{{ customerName }}'
+                    }
+                }
+            }).then(function (result) {
+                if (result.error) {
+                    console.log(result.error.message);
+                    const displayError = document.getElementById('card-errors');
+                    displayError.textContent = result.error.message;
+                } else {
+                    if (result.paymentIntent.status === 'succeeded') {
+                       window.location.href = '/done'
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}

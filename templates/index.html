@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div>
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="/static/images/scrubPicOne.jpg">
+                </div>
+                <div class="product-info">
+                    <button type="button"
+                            href="#purchase_product"
+                            class="btn btn-primary btn-lg buy-it-button"
+                            data-toggle="modal"
+                            data-product-price="29.99"
+                            data-product-image="/static/images/scrubPicOne.jpg"
+                            data-product-title="Face Scrub"> Face Scrub | $29.99
+                    </button>
+                </div>
+            </div>
+
+    <div class="modal" id="purchase_product">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">Close</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5 name="productTitle"></h5>
+                    <form action="/purchase" method="post">
+                        <div>
+                            <h6>Product</h6>
+                            <input type="text" name="productTitle" readonly/>
+                            $<input type="text" name="productPrice" readonly/>
+                            <img style="width: 7vw;" id="modal-image" src="">
+                        </div>
+                        <hr>
+                        <div>
+                            <h6>Email of customer picking up the order</h6>
+
+                             <input name="customerName"
+                                   placeholder="Enter your full name"
+                                   style="width: 100%"
+                                   type="text"
+                                   required
+                            />
+
+                            <input name="customerEmail"
+                                   placeholder="Enter your email"
+                                   style="width: 100%"
+                                   type="email"
+                                   required
+                            />
+                        </div>
+
+
+                        <button style="margin-top: 20px;" class="btn btn-info btn-small btn-block" type="submit">Buy It!</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $('#purchase_product').on('show.bs.modal', function (e) {
+            var productTitle = $(e.relatedTarget).data('product-title');
+            var productPrice = $(e.relatedTarget).data('product-price');
+            var productImage = $(e.relatedTarget).data('product-image')
+            $(e.currentTarget).find('input[name="productTitle"]').val(productTitle);
+            $(e.currentTarget).find('input[name="productPrice"]').val(productPrice);
+            $(e.currentTarget).find('#modal-image').attr('src', productImage);
+
+        });
+    </script>
+{% endblock %}
