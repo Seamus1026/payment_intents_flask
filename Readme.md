@@ -1,8 +1,8 @@
-Overview
+**Overview**
 
-This app implements the accept a payment workflow from the Stripe docs using Python (flask) and Stripe elements.
+This app implements Stripe PaymentIntents using Python (flask) and Stripe elements.
 
-Setup
+**Setup**
 
 1. install virtual env: pip install virtualenv 
 2. create virtual env: virtualenv env 
@@ -12,10 +12,10 @@ Setup
 
 The server runs on port 5000. You can navigate to http://localhost:5000 
 
-Test the webhooks / view successful order log
+**Test the webhooks / view successful order log**
 
 1. Install the Stripe CLI: see step 1 at https://stripe.com/docs/stripe-cli
-2. Login with your stripe account: stripe login
-3. Open terminal and run: ./stripe listen --forward-to http://localhost:5000/webhook --events=payment_intent.succeeded --events=payment_intent.payment_failed
+2. In the terminal, login with your stripe account: stripe login
+3. Run the following in the terminal: ./stripe listen --forward-to http://localhost:5000/webhook --events=payment_intent.succeeded --events=payment_intent.payment_failed
 
-Once webhooks are set up, successful orders (and failed payment attempts) will be logged in "fulfillment.txt". 
+Once webhooks are set up, subsequent successful test payments (and failed payment attempts) will be logged in "fulfillment.txt". 
