@@ -1,4 +1,5 @@
 Overview
+
 This app implements the accept a payment workflow from the Stripe docs using Python (flask) and Stripe elements.
 
 Setup
